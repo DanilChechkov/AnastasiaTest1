@@ -5,17 +5,16 @@ workDir = os.path.dirname((os.path.abspath(__file__)))      #Корневая д
 app = Flask(__name__)
 
 
-def hashname(filename):                                 
-    print(hashlib.sha256(filename.encode()).hexdigest())    #Функция хэширования SHA256
+def hashname(filename):                                     #Функция хэширования SHA256
     return hashlib.sha256(filename.encode()).hexdigest()
 
 @app.route('/',methods=['POST'])                            #Получаем запрос на загрузку файла с главной
 def upload():
     if request.method == 'POST':
         file = request.files['file']
-        fname = hashname(file.filename)    
+        fname = hashname(file.filename)                     #Хэшируем имя файла и создаем дирректорию при необходимости
         if not os.path.exists(os.path.join(workDir,'store')):
-            os.mkdir(os.path.join(workDir,'store'))                 #Хэшируем имя файла и создаем дирректорию при необходимости
+            os.mkdir(os.path.join(workDir,'store'))                 
         if not os.path.exists(os.path.join(workDir,'store',fname[:2])):
             os.mkdir(os.path.join(workDir,'store',fname[:2]))
         file.save(os.path.join(workDir,'store',fname[:2],fname))    #Наконец сохраняем файл на сервер
