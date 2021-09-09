@@ -22,5 +22,8 @@ curl -X GET http://danilchechkov.pythonanywhere.com/{YOUR HASH}
 curl -X DELETE http://127.0.0.1:5000/{YOUR HASH}
 curl -X DELETE http://danilchechkov.pythonanywhere.com/{YOUR HASH}
 
-
-
+Для запуска устанавливаем venv
+pip install flask
+export FLASK_APP=test1.py
+export FLASK_ENV=development
+flask run
