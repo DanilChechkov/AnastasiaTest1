@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Copyright" content="Чечков Данил">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <title>Simple file sharing</title>
+</head>
+<body>
+    <ul class=header>
+        <li id=liupl>Загрузить</li>
+        <li id=lidow>Скачать</li>
+        <li id=lidel>Удалить</li>
+    </ul>
+    <form id=foupl class=row action="" method="POST" enctype="multipart/form-data">
+        <input type=file name=file class=upload placeholder="Выберите файл"></input>
+        <button type="submit" class=upload>Загрузить</button>
+    </form>
+    <form id=fodow class=row action='' method="POST" enctype="multipart/form-data" style='display:none;'>
+        <input type=text name=name class=download placeholder="Введите хэш"></input>
+        <button id=bdow type="submit" class=download>Скачать</button>
+    </form>
+    <form id=fodel class=row action="" method="POST" enctype="multipart/form-data" style='display:none;'>
+        <input type=text name=delete placeholder="Введите хэш"></input>
+        <button type="submit" class=delete>Удалить</button>
+    </form>
+</body>
+<script type="text/javascript">
+    $("#liupl").on('click', function() {
+        $('#foupl').show();
+        $('#fodow').hide();
+        $('#fodel').hide();
+        });
+    $("#lidow").on('click', function() {
+        $('#foupl').hide();
+        $('#fodow').show();
+        $('#fodel').hide();
+        });
+    $("#lidel").on('click', function() {
+        $('#foupl').hide();
+        $('#fodow').hide();
+        $('#fodel').show();
+        });
+</script>
