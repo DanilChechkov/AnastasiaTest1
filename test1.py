@@ -1,6 +1,5 @@
 import os
 import hashlib
-import re
 import shutil
 from flask import Flask, request, send_from_directory, render_template
 from flask.helpers import url_for
