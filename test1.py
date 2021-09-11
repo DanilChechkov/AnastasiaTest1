@@ -14,8 +14,7 @@ def hashname(file):                                     #Функция хэши
 @app.route('/',methods=['POST','GET'])                            #Получаем запрос на загрузку файла с главной
 def upload():
     if request.method == 'POST':
-        print(request.values.to_dict())
-        if request.files:
+        if 'file' in request.files:
             file = request.files['file']
             file.save(os.path.join(workDir,'tmp'))
             fname = file.filename
@@ -26,16 +25,16 @@ def upload():
                 if not os.path.exists(os.path.join(workDir,'store',fname[:2])):
                     os.mkdir(os.path.join(workDir,'store',fname[:2]))
             shutil.move(os.path.join(workDir,'tmp'),os.path.join(workDir,'store',fname[:2],fname))    #Наконец сохраняем файл на сервер
-            return fname                                        #Возвращаем пользователю хэшированное имя файла
+            return fname, {'Content-Type': 'text/html'}                                        #Возвращаем пользователю хэшированное имя файла
         elif 'name' in request.values:
             print(request.values)
             return redirect(url_for('download', name=request.values['name']))
         elif 'delete' in request.values:
             try:
                 os.remove(os.path.join(workDir,'store',request.values['delete'][:2],request.values['delete']))
-                return 'FILE REMOVED'
+                return 'FILE REMOVED', {'Content-Type': 'text/html'}
             except:
-                return 'NO SUCH FILE'
+                return 'NO SUCH FILE', {'Content-Type': 'text/html'}
         else:
             return render_template('index.html')
     else:
@@ -46,12 +45,12 @@ def download(name):
     try:
         return send_from_directory(os.path.join(workDir,'store',name[:2]),name,as_attachment=True)
     except:
-        return "NO SUCH FILE"                               #Если файла нет, то возращаем сообщения что такого файла нет
+        return "NO SUCH FILE", {'Content-Type': 'text/html'}                               #Если файла нет, то возращаем сообщения что такого файла нет
 
 @app.delete('/<name>')                                      #Удаление файла с сервера
 def delete(name):
     try:
         os.remove(os.path.join(workDir,'store',name[:2],name))
-        return 'FILE REMOVED'
+        return 'FILE REMOVED', {'Content-Type': 'text/html'}
     except:
-        return 'NO SUCH FILE'
+        return 'NO SUCH FILE', {'Content-Type': 'text/html'}
