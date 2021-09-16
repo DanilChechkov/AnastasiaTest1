@@ -8,7 +8,7 @@ workDir = os.path.dirname((os.path.abspath(__file__)))      #Корневая д
 app = Flask(__name__,template_folder='template')
 
 def hashname(file):                                     #Функция хэширования SHA256
-    return hashlib.sha256(file.read()).hexdigest()
+    return hashlib(file.read()).hexdigest()
 
 
 @app.route('/',methods=['POST','GET'])                            #Получаем запрос на загрузку файла с главной
@@ -32,9 +32,9 @@ def upload():
         elif 'delete' in request.values:
             try:
                 os.remove(os.path.join(workDir,'store',request.values['delete'][:2],request.values['delete']))
-                return 'FILE REMOVED', {'Content-Type': 'text/html'}
+                return 'FILE REMOVED'
             except:
-                return 'NO SUCH FILE', {'Content-Type': 'text/html'}
+                return 'NO SUCH FILE'
         else:
             return render_template('index.html')
     else:
@@ -45,12 +45,12 @@ def download(name):
     try:
         return send_from_directory(os.path.join(workDir,'store',name[:2]),name,as_attachment=True)
     except:
-        return "NO SUCH FILE", {'Content-Type': 'text/html'}                               #Если файла нет, то возращаем сообщения что такого файла нет
+        return "NO SUCH FILE"                              #Если файла нет, то возращаем сообщения что такого файла нет
 
 @app.delete('/<name>')                                      #Удаление файла с сервера
 def delete(name):
     try:
         os.remove(os.path.join(workDir,'store',name[:2],name))
-        return 'FILE REMOVED', {'Content-Type': 'text/html'}
+        return 'FILE REMOVED'
     except:
-        return 'NO SUCH FILE', {'Content-Type': 'text/html'}
+        return 'NO SUCH FILE'
